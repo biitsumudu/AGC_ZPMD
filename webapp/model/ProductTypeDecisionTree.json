@@ -1,0 +1,94 @@
+{
+    "DecisionTree": [
+        {
+            "QuestionID": 1,
+            "QuestionText": "Is the request for Material or Service?",
+            "Options": [
+                {
+                    "Label": "Service",
+                    "Value": "ZSERV",
+                    "NextStep": null,
+                    "Icon": "sap-icon://service"
+                },
+                {
+                    "Label": "Material",
+                    "Value": null,
+                    "NextStep": 2,
+                    "Icon": "sap-icon://product"
+                }
+            ]
+        },
+        {
+            "QuestionID": 2,
+            "QuestionText": "Is the request for Project Returned Items?",
+            "Options": [
+                {
+                    "Label": "Yes",
+                    "Value": "UNBW",
+                    "NextStep": null,
+                    "Icon": "sap-icon://Entry-Contact"
+                },
+                {
+                    "Label": "No",
+                    "Value": null,
+                    "NextStep": 3,
+                    "Icon": "sap-icon://decline"
+                }
+            ]
+        },
+        {
+            "QuestionID": 3,
+            "QuestionText": "Is the request for Spares or Equipment?",
+            "Options": [
+                {
+                    "Label": "Spares",
+                    "Value": "ERSA",
+                    "NextStep": null,
+                    "Icon": "sap-icon://settings"
+                },
+                {
+                    "Label": "Equipment",
+                    "Value": null,
+                    "NextStep": 4,
+                    "Icon": "sap-icon://machine"
+                }
+            ]
+        },
+        {
+            "QuestionID": 4,
+            "QuestionText": "Is the Equipment for Vessel or Projects?",
+            "Options": [
+                {
+                    "Label": "Projects",
+                    "Value": "ZNFE",
+                    "NextStep": null,
+                    "Icon": "sap-icon://project-definition-triangle"
+                },
+                {
+                    "Label": "Vessel",
+                    "Value": null,
+                    "NextStep": 5,
+                    "Icon": "sap-icon://shipping-status"
+                }
+            ]
+        },
+        {
+            "QuestionID": 5,
+            "QuestionText": "Is the Equipment maintained as a Finance Asset?",
+            "Options": [
+                {
+                    "Label": "Yes",
+                    "Value": "ZVES",
+                    "NextStep": null,
+                    "Icon": "sap-icon://official-service"
+                },
+                {
+                    "Label": "No",
+                    "Value": "ERSA",
+                    "NextStep": null,
+                    "Icon": "sap-icon://money-bills"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,75 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:html="http://www.w3.org/1999/xhtml">
+    <Dialog id="idNewRequestDialog" showHeader="false"
+        verticalScrolling="false" contentHeight="50%" contentWidth="60%">
+        <f:DynamicPage toggleHeaderOnTitleClick="false"
+            class="sapUiNoContentPadding" showFooter="true">
+            <f:title>
+                <f:DynamicPageTitle >
+                    <f:heading>
+                        <Title text="{i18n>newRequestWizard.title}" ></Title>
+                    </f:heading>
+                </f:DynamicPageTitle>
+            </f:title>
+            <f:content>
+                <Wizard id="CreateProductWizard" class="sapUiResponsivePadding--header sapUiResponsivePadding--content" showNextButton="false" renderMode="Page">
+                    <WizardStep title="Question 1" icon="sap-icon://question-mark" optional="false" validated="true" >
+                        <VBox class="sapUiSmallMargin">
+                            <Label text="{i18n>newRequestWizard.question01}" labelFor="idRequestTypeSelect" />
+                            <RadioButtonGroup >
+                                <RadioButton text="Service" />
+                                <RadioButton text="Material" />
+                            </RadioButtonGroup>
+                        </VBox>
+                    </WizardStep>
+                    <WizardStep optional="false" validated="true" visible="false">
+                        <VBox class="sapUiSmallMargin">
+                            <Label text="{i18n>newRequestWizard.question02}" labelFor="idRequestDescriptionInput" />
+                            <RadioButtonGroup >
+                                <RadioButton text="Yes" />
+                                <RadioButton text="No" />
+                            </RadioButtonGroup>
+                        </VBox>
+                    </WizardStep>
+                    <WizardStep optional="false" validated="false">
+                        <VBox class="sapUiSmallMargin">
+                            <Label text="{i18n>newRequestWizard.question03}" labelFor="idAttachmentsUpload"  />
+                            <RadioButtonGroup >
+                                <RadioButton text="Spares" />
+                                <RadioButton text="Equipment" />
+                            </RadioButtonGroup>
+                        </VBox>
+                    </WizardStep>
+                    <WizardStep optional="false" validated="false">
+                        <VBox class="sapUiSmallMargin">
+                            <Label text="{i18n>newRequestWizard.question04}" />
+                            <RadioButtonGroup >
+                                <RadioButton text="Projects"></RadioButton>
+                                <RadioButton text="Vessel"></RadioButton>
+                            </RadioButtonGroup>
+                        </VBox>
+                    </WizardStep>
+                    <WizardStep optional="false" validated="false">
+                        <VBox class="sapUiSmallMargin">
+                            <Label text="{i18n>newRequestWizard.question05}" />
+                            <RadioButtonGroup >
+                                <RadioButton text="Yes"></RadioButton>
+                                <RadioButton text="No"></RadioButton>
+                            </RadioButtonGroup>
+                        </VBox>
+                    </WizardStep>
+                </Wizard>
+            </f:content>
+                <f:footer>
+                    <Toolbar>
+                        <ToolbarSpacer />
+                        <Button text="{i18n>newRequestWizard.cancelButton}" press=".handleWizardCancel" />
+                        <Button text="{i18n>newRequestWizard.nextButton}" type="Emphasized" press=".handleWizardNext" />
+                    </Toolbar>
+                </f:footer>
+        </f:DynamicPage>
+    </Dialog>
+</core:FragmentDefinition>
