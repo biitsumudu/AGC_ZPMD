@@ -1,8 +1,7 @@
 sap.ui.define([
     "sap/m/MessageToast",
-    "sap/ui/core/Fragment",
-    "sap/suite/ui/generic/template/displayMode"
-], function (MessageToast, Fragment, displayMode) {
+    "sap/ui/core/Fragment"
+], function (MessageToast, Fragment) {
     'use strict';
 
     return {
@@ -67,87 +66,38 @@ sap.ui.define([
             oModel.setProperty("/selectedOption", null); // Reset selected option when restarting
         },
 
-        continueNewRequest1: function () {
-            const oDataModel = this.getView().getModel();
-            var oModel = this.getView().getModel("decisionTree");
-            var oSelectedOption = oModel.getProperty("/selectedOption");
-
-            this.oDialog.then(oDialog => {
-                oDialog.close();
-
-                var targetPath = "/header(-)";
-
-                oModel.createBindingContext(targetPath, null, {}, oContext => {
-                    var oNavControl = this.extensionAPI.getNavigationController();
-                    oNavControl.navigateInternal(oContext, {
-                        replaceInHistory: false,
-                        displayMode: sap.suite.ui.generic.template.displayMode.create,
-                    });
-                }, true);
-            });
-        },
-
         continueNewRequest: function () {
             const oDataModel = this.getView().getModel();
             const oDecisionModel = this.getView().getModel("decisionTree");
             const oSelectedOption = oDecisionModel.getProperty("/selectedOption");
 
             this.oDialog.then(oDialog => {
-                oDialog.close();
-
                 var oPayload = {
                     ProductType: oSelectedOption.Value
                 };
+                oDialog.setBusy(true); // Show busy indicator while creating entry
 
                 oDataModel.create("/header", oPayload, {
                     success: (oCreatedEntry, oResponse) => {
                         var sPath = oDataModel.getKey(oCreatedEntry);
                         var oNewContext = new sap.ui.model.Context(oDataModel, sPath);
                         var oNavControl = this.extensionAPI.getNavigationController();
+
+                        oDialog.setBusy(false); // Hide busy indicator after entry is created
+                        oDialog.close(); // Close the dialog after successful creation
+
                         oNavControl.navigateInternal(oNewContext, {
                             replaceInHistory: false,
-                            displayMode: displayMode.edit,
+                            displayMode: sap.suite.ui.generic.template.displayMode.edit,
                             isAbsolute: true
                         });
                     },
                     error: oError => {
+                        oDialog.setBusy(false); // Hide busy indicator on error
                         MessageToast.show("Error creating entry: " + oError.message);
                     }
                 });
             });
         },
-
-        continueNewRequest2: function () {
-            const oDataModel = this.getView().getModel();
-            const oDecisionModel = this.getView().getModel("decisionTree");
-            const oSelectedOption = oDecisionModel.getProperty("/selectedOption");
-
-            this.oDialog.then(oDialog => {
-                oDialog.close();
-
-                var oPayload = {
-                    ProductType: oSelectedOption.Value
-                };
-
-                var oNewEntry = oDataModel.createEntry("/header", {
-                    inactive: false,
-                    refreshAfterChange: true,
-                    properties: oPayload,
-                    created: (oCreatedEntry) => {
-                        var oNavControl = this.extensionAPI.getNavigationController();
-                        oNavControl.navigateInternal(oCreatedEntry, {
-                            replaceInHistory: false,
-                            displayMode: "edit"
-                        });
-                    },
-                    success: (oCreatedEntry, oResponse) => {
-                    },
-                    error: oError => {
-                        MessageToast.show("Error creating entry: " + oError.message);
-                    }
-                });
-            });
-        }
-
     };
 });

@@ -1,7 +1,7 @@
 ## Application Details
 |               |
 | ------------- |
-|**Generation Date and Time**<br>Wed Apr 22 2026 14:07:44 GMT+0530 (India Standard Time)|
+|**Generation Date and Time**<br>Wed Apr 29 2026 14:35:21 GMT+0530 (India Standard Time)|
 |**App Generator**<br>SAP Fiori Application Generator|
 |**App Generator Version**<br>1.22.0|
 |**Generation Platform**<br>Visual Studio Code|
@@ -9,18 +9,18 @@
 |**Service Type**<br>OData URL|
 |**Service URL**<br>https://vmsaps4hana.uksouth.cloudapp.azure.com:5207/sap/opu/odata/sap/ZPMD_UI_PRODUCT_REQ_V2/|
 |**Module Name**<br>productrequest|
-|**Application Title**<br>Product Request|
+|**Application Title**<br>Product Master Request|
 |**Namespace**<br>com.agc.pmd|
 |**UI5 Theme**<br>sap_horizon|
 |**UI5 Version**<br>1.147.1|
 |**Enable TypeScript**<br>False|
 |**Add Eslint configuration**<br>True, see https://www.npmjs.com/package/@sap-ux/eslint-plugin-fiori-tools#rules for the eslint rules.|
 |**Main Entity**<br>header|
-|**Navigation Entity**<br>to_Plant|
+|**Navigation Entity**<br>None|
 
 ## productrequest
 
-Product Request Fiori application.
+Product Master Request
 
 ### Starting the generated app
 

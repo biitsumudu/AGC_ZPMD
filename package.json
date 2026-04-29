@@ -1,7 +1,7 @@
 {
   "name": "productrequest",
   "version": "0.0.1",
-  "description": "Product Request Fiori application.",
+  "description": "Product Master Request",
   "keywords": [
     "ui5",
     "openui5",
@@ -10,10 +10,10 @@
   "main": "webapp/index.html",
   "dependencies": {},
   "devDependencies": {
-    "@ui5/cli": "^4.0.52",
+    "@ui5/cli": "^4.0.33",
     "@sap/ux-ui5-tooling": "1",
-    "@sap-ux/eslint-plugin-fiori-tools": "^9.12.1",
-    "eslint": "^10",
+    "@sap-ux/eslint-plugin-fiori-tools": "^9.0.0",
+    "eslint": "^9",
     "@sap-ux/ui5-middleware-fe-mockserver": "2"
   },
   "scripts": {

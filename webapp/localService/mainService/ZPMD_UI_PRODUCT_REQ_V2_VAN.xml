@@ -97,6 +97,45 @@
             <Annotations Target="cds_zpmd_ui_product_req.I_Customer_VHType/IsCompetitor">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType/DraftUUID">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType/DraftEntityType">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType/DraftAccessType">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType/ProcessingStartDateTime">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType/InProcessByUser">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType/DraftIsKeptByUser">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType/EnqueueStartDateTime">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType/DraftIsCreatedByMe">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType/DraftIsLastChangedByMe">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType/DraftIsProcessedByMe">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType/CreatedByUserDescription">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType/LastChangedByUserDescription">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType/InProcessByUserDescription">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="cds_zpmd_ui_product_req.ProductGroupType/AuthorizationGroup">
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
@@ -200,7 +239,142 @@
                 <Annotation Term="UI.HiddenFilter"/>
                 <Annotation Term="UI.Hidden"/>
             </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.PlantType/HasDraftEntity">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.PlantType/DraftEntityCreationDateTime">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.PlantType/DraftEntityLastChangeDateTime">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.PlantType/HasActiveEntity">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.PlantType/IsActiveEntity">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.PlantType/Delete_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.PlantType/Update_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.PlantType/to_Proc_oc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.PlantType/to_Scm_oc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
             <Annotations Target="cds_zpmd_ui_product_req.PlantType">
+                <Annotation Term="UI.HeaderFacets">
+                    <Collection>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Plant Data"/>
+                            <PropertyValue Property="ID" String="HeaderData"/>
+                            <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#HeaderData"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.Facets">
+                    <Collection>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="SCM Data"/>
+                            <PropertyValue Property="ID" String="ScmData"/>
+                            <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#ScmData"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Procurement Data"/>
+                            <PropertyValue Property="ID" String="procuData"/>
+                            <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#procuData"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="HeaderData">
+                    <Record>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="RequestId"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="Plant"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="PlantName"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="ScmData">
+                    <Record>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="IsStockRepl"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="MrpType"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="LotSize"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="ReorderPoint"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="MaxStock"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="procuData">
+                    <Record>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="ProductGroup"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="PurchasingGroup"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="PurchasingUom"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="PoText"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="ValuationClass"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.HeaderInfo">
+                    <Record>
+                        <PropertyValue Property="TypeName" String="Plant"/>
+                        <PropertyValue Property="TypeNamePlural" String="Plants"/>
+                        <PropertyValue Property="TypeImageUrl" String="sap-icon://product"/>
+                        <PropertyValue Property="Title">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="RequestId"/>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="Description">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="PlantName"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
                 <Annotation Term="UI.LineItem">
                     <Collection>
                         <Record Type="UI.DataField">
@@ -212,8 +386,96 @@
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="PlantName"/>
                         </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="ProductGroup"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="PurchasingGroup"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="PurchasingUom"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="PoText"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="ValuationClass"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="IsStockRepl"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MrpType"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="LotSize"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="ReorderPoint"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="MaxStock"/>
+                        </Record>
                     </Collection>
                 </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.ProcType/HasDraftEntity">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.ProcType/DraftEntityCreationDateTime">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.ProcType/DraftEntityLastChangeDateTime">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.ProcType/HasActiveEntity">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.ProcType/IsActiveEntity">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.ProcType/Delete_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.ProcType/Update_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.headerType/HasDraftEntity">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.headerType/DraftEntityCreationDateTime">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.headerType/DraftEntityLastChangeDateTime">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.headerType/HasActiveEntity">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.headerType/IsActiveEntity">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.headerType/Edit_ac">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.headerType/Delete_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.headerType/Update_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.headerType/to_Plant_oc">
+                <Annotation Term="UI.Hidden"/>
             </Annotations>
             <Annotations Target="cds_zpmd_ui_product_req.headerType/Comments">
                 <Annotation Term="UI.MultiLineText"/>
@@ -225,13 +487,17 @@
                 <Annotation Term="UI.MultiLineText"/>
             </Annotations>
             <Annotations Target="cds_zpmd_ui_product_req.headerType">
-                <Annotation Term="UI.Facets">
+                <Annotation Term="UI.HeaderFacets">
                     <Collection>
                         <Record Type="UI.ReferenceFacet">
                             <PropertyValue Property="Label" String="Header Data"/>
                             <PropertyValue Property="ID" String="headerData"/>
                             <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#HeaderData"/>
                         </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.Facets">
+                    <Collection>
                         <Record Type="UI.ReferenceFacet">
                             <PropertyValue Property="Label" String="Workflow Status"/>
                             <PropertyValue Property="ID" String="workflowStatus"/>
@@ -241,6 +507,21 @@
                             <PropertyValue Property="Label" String="Basic Data"/>
                             <PropertyValue Property="ID" String="basicData"/>
                             <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#BasicData"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Procurement Data"/>
+                            <PropertyValue Property="ID" String="procuData"/>
+                            <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#procuData"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="SCM Data"/>
+                            <PropertyValue Property="ID" String="ScmData"/>
+                            <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#ScmData"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Plants"/>
+                            <PropertyValue Property="ID" String="PlantsFacet"/>
+                            <PropertyValue Property="Target" AnnotationPath="to_Plant/@UI.LineItem"/>
                         </Record>
                     </Collection>
                 </Annotation>
@@ -305,6 +586,35 @@
                         </PropertyValue>
                     </Record>
                 </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="ScmData">
+                    <Record>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="IsStockRepl"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="MrpType"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="LotSize"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="ReorderPoint"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="MaxStock"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="ReorderPointUnit"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="MaxStockUnit"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
                 <Annotation Term="UI.FieldGroup" Qualifier="WorkflowStatus">
                     <Record>
                         <PropertyValue Property="Data">
@@ -337,10 +647,34 @@
                         </PropertyValue>
                     </Record>
                 </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="procuData">
+                    <Record>
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="ProductGroup"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="PurchasingGroup"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="PurchasingUom"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="PoText"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="ValuationClass"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
                 <Annotation Term="UI.HeaderInfo">
                     <Record>
                         <PropertyValue Property="TypeName" String="Request"/>
                         <PropertyValue Property="TypeNamePlural" String="Requests"/>
+                        <PropertyValue Property="TypeImageUrl" String="sap-icon://product"/>
                         <PropertyValue Property="Title">
                             <Record Type="UI.DataField">
                                 <PropertyValue Property="Label" String="Request ID"/>
@@ -355,6 +689,11 @@
                                         </Collection>
                                     </Annotation>
                                 </PropertyValue>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="Description">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Label" String="(RequestID)"/>
                             </Record>
                         </PropertyValue>
                     </Record>
@@ -380,16 +719,8 @@
                             <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
                         </Record>
                         <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="RequestTstmpl"/>
-                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
-                        </Record>
-                        <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="OverallStatus"/>
                             <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
-                        </Record>
-                        <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="Cataloguer"/>
-                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="CatStatus"/>
@@ -408,15 +739,15 @@
                             <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Low"/>
                         </Record>
                         <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="ReqPlant"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="Product"/>
                             <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
                         </Record>
                         <Record Type="UI.DataField">
                             <PropertyValue Property="Value" Path="ProductType"/>
-                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
-                        </Record>
-                        <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="ReqPlant"/>
                             <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
                         </Record>
                         <Record Type="UI.DataField">
@@ -435,26 +766,54 @@
                             <PropertyValue Property="Value" Path="DrawingNr"/>
                             <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Low"/>
                         </Record>
-                        <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="Manufacturer"/>
-                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
-                        </Record>
-                        <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="MfrPartNr"/>
-                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Low"/>
-                        </Record>
                     </Collection>
                 </Annotation>
                 <Annotation Term="UI.SelectionFields">
                     <Collection>
                         <PropertyPath>RequestId</PropertyPath>
-                        <PropertyPath>Requestor</PropertyPath>
-                        <PropertyPath>OverallStatus</PropertyPath>
                         <PropertyPath>Product</PropertyPath>
-                        <PropertyPath>ProductType</PropertyPath>
-                        <PropertyPath>ReqPlant</PropertyPath>
-                        <PropertyPath>MatShortText</PropertyPath>
-                        <PropertyPath>Manufacturer</PropertyPath>
+                        <PropertyPath>OverallStatus</PropertyPath>
+                        <PropertyPath>CatStatus</PropertyPath>
+                        <PropertyPath>ProcStatus</PropertyPath>
+                        <PropertyPath>ScmStatus</PropertyPath>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.ScmType/HasDraftEntity">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.ScmType/DraftEntityCreationDateTime">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.ScmType/DraftEntityLastChangeDateTime">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.ScmType/HasActiveEntity">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.ScmType/IsActiveEntity">
+                <Annotation Term="UI.HiddenFilter"/>
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.ScmType/Delete_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.ScmType/Update_mc">
+                <Annotation Term="UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.ScmType">
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="Plant"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="IsStockRepl"/>
+                        </Record>
                     </Collection>
                 </Annotation>
             </Annotations>

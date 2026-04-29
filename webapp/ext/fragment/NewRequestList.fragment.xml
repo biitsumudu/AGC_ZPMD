@@ -3,7 +3,7 @@
     xmlns:core="sap.ui.core"
     xmlns:f="sap.f"
     xmlns:html="http://www.w3.org/1999/xhtml">
-    <Dialog id="idNewRequestDialogList" showHeader="false"
+    <Dialog id="idNewRequestDialogList" showHeader="false" busyIndicatorDelay="0"
         verticalScrolling="false" contentHeight="50%" contentWidth="40%">
         <f:DynamicPage toggleHeaderOnTitleClick="false"
             class="sapUiNoContentPadding" showFooter="true">

@@ -74,6 +74,36 @@
                 <Property Name="DataController9" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
                 <Property Name="DataController10" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data Controller" sap:quickinfo="BP: Data Controller (Internal Use Only)"/>
             </EntityType>
+            <EntityType Name="I_DraftAdministrativeDataType" sap:label="Draft Administration Data" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="DraftUUID"/>
+                    <PropertyRef Name="DraftEntityType"/>
+                </Key>
+                <Property Name="DraftUUID" Type="Edm.Guid" Nullable="false" sap:label="Draft (Technical ID)"/>
+                <Property Name="DraftEntityType" Type="Edm.String" Nullable="false" MaxLength="30" sap:display-format="UpperCase" sap:label="Draft Entity ID"/>
+                <Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:filter-restriction="interval" sap:label="Draft Created On"/>
+                <Property Name="CreatedByUser" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:text="CreatedByUserDescription" sap:label="Draft Created By" sap:value-list="standard"/>
+                <Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:filter-restriction="interval" sap:label="Draft Last Changed On"/>
+                <Property Name="LastChangedByUser" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:text="LastChangedByUserDescription" sap:label="Draft Last Changed By" sap:value-list="standard"/>
+                <Property Name="DraftAccessType" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Draft Access Type"/>
+                <Property Name="ProcessingStartDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Draft In Process Since"/>
+                <Property Name="InProcessByUser" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:text="InProcessByUserDescription" sap:label="Draft In Process By"/>
+                <Property Name="DraftIsKeptByUser" Type="Edm.Boolean" sap:label="Draft Is Kept By User"/>
+                <Property Name="EnqueueStartDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Draft Locked Since"/>
+                <Property Name="DraftIsCreatedByMe" Type="Edm.Boolean" sap:label="Draft Created By Me"/>
+                <Property Name="DraftIsLastChangedByMe" Type="Edm.Boolean" sap:label="Draft Last Changed By Me"/>
+                <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean" sap:label="Draft In Process By Me"/>
+                <Property Name="CreatedByUserDescription" Type="Edm.String" MaxLength="80" sap:label="Draft Created By (Description)"/>
+                <Property Name="LastChangedByUserDescription" Type="Edm.String" MaxLength="80" sap:label="Draft Last Changed By (Description)"/>
+                <Property Name="InProcessByUserDescription" Type="Edm.String" MaxLength="80" sap:label="Draft In Process By (Description)"/>
+            </EntityType>
+            <EntityType Name="I_DraftAdministrativeUserVHType" sap:label="Draft User" sap:value-list="true" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="UserID"/>
+                </Key>
+                <Property Name="UserID" Type="Edm.String" Nullable="false" MaxLength="12" sap:display-format="UpperCase" sap:text="UserDescription" sap:label="User" sap:quickinfo="User Name in User Master Record"/>
+                <Property Name="UserDescription" Type="Edm.String" MaxLength="80" sap:label="Description" sap:quickinfo="User Description"/>
+            </EntityType>
             <EntityType Name="MRPTypeType" sap:label="MRP Type" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="MRPType"/>
@@ -324,16 +354,40 @@
                 <Key>
                     <PropertyRef Name="RequestId"/>
                     <PropertyRef Name="Plant"/>
+                    <PropertyRef Name="IsActiveEntity"/>
                 </Key>
-                <Property Name="RequestId" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Request ID"/>
-                <Property Name="Plant" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Plant"/>
+                <Property Name="Delete_mc" Type="Edm.Boolean" sap:label="Dyn. Method Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Update_mc" Type="Edm.Boolean" sap:label="Dyn. Method Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="to_Proc_oc" Type="Edm.Boolean" sap:label="Dynamic CbA-Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="to_Scm_oc" Type="Edm.Boolean" sap:label="Dynamic CbA-Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RequestId" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Request ID" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Plant" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Plant" sap:updatable="false"/>
                 <Property Name="IsReqPlant" Type="Edm.Boolean" sap:label="Truth Value" sap:quickinfo="Truth Value: True/False"/>
                 <Property Name="PlantName" Type="Edm.String" MaxLength="30" sap:label="Plant Name" sap:quickinfo="Name"/>
+                <Property Name="ProductGroup" Type="Edm.String" MaxLength="9" sap:display-format="UpperCase" sap:label="Product Group" sap:quickinfo="Material Group" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="PurchasingGroup" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Product Group" sap:quickinfo="Purchasing Group" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="PurchasingUom" Type="Edm.String" MaxLength="3" sap:label="Purchasing UoM" sap:quickinfo="Purchase Order Unit of Measure" sap:creatable="false" sap:updatable="false" sap:semantics="unit-of-measure"/>
+                <Property Name="PoText" Type="Edm.String" MaxLength="255" sap:label="PO Text" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="ValuationClass" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Valuation Class" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="IsStockRepl" Type="Edm.Boolean" sap:label="MRP Controller" sap:quickinfo="Truth Value: True/False" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="MrpType" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="MRP Type" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="LotSize" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="MRP Group" sap:quickinfo="Lot Sizing Procedure in Materials Planning" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="ReorderPoint" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="ReorderPointUnit" sap:label="Reorder Point" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="MaxStock" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="MaxStockUnit" sap:label="Maximum Stock" sap:quickinfo="Maximum Stock Level" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="ReorderPointUnit" Type="Edm.String" MaxLength="3" sap:label="Base Unit of Measure" sap:creatable="false" sap:updatable="false" sap:semantics="unit-of-measure"/>
+                <Property Name="MaxStockUnit" Type="Edm.String" MaxLength="3" sap:label="Base Unit of Measure" sap:creatable="false" sap:updatable="false" sap:semantics="unit-of-measure"/>
                 <Property Name="CreatedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Created By" sap:quickinfo="Created By User"/>
                 <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Created On" sap:quickinfo="Creation Date Time"/>
                 <Property Name="ChangedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Changed By" sap:quickinfo="Last Changed By User"/>
                 <Property Name="ChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Changed On" sap:quickinfo="Last Change Date Time"/>
                 <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Changed On" sap:quickinfo="Local Instance Last Change Date Time"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" sap:label="Has Draft" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="DraftEntityCreationDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Draft Created On" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="DraftEntityLastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Draft Last Changed On" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" sap:label="Has active" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" sap:label="Is active" sap:creatable="false" sap:updatable="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Relationship="cds_zpmd_ui_product_req.assoc_53F2D8DEF8D6C68BBA0389E7BF49663D" FromRole="FromRole_assoc_53F2D8DEF8D6C68BBA0389E7BF49663D" ToRole="ToRole_assoc_53F2D8DEF8D6C68BBA0389E7BF49663D"/>
+                <NavigationProperty Name="SiblingEntity" Relationship="cds_zpmd_ui_product_req.assoc_783C44B3DD8BD27FFB49D331478C2510" FromRole="FromRole_assoc_783C44B3DD8BD27FFB49D331478C2510" ToRole="ToRole_assoc_783C44B3DD8BD27FFB49D331478C2510"/>
                 <NavigationProperty Name="to_Proc" Relationship="cds_zpmd_ui_product_req.assoc_2B5EBC380D2F68BD3199BE2C50A5F2C0" FromRole="FromRole_assoc_2B5EBC380D2F68BD3199BE2C50A5F2C0" ToRole="ToRole_assoc_2B5EBC380D2F68BD3199BE2C50A5F2C0"/>
                 <NavigationProperty Name="to_Scm" Relationship="cds_zpmd_ui_product_req.assoc_A14017234DD1D1B16E2E6A5C703D9669" FromRole="FromRole_assoc_A14017234DD1D1B16E2E6A5C703D9669" ToRole="ToRole_assoc_A14017234DD1D1B16E2E6A5C703D9669"/>
                 <NavigationProperty Name="to_Request" Relationship="cds_zpmd_ui_product_req.assoc_01411874A3416866B28ADD632AA1DF36" FromRole="ToRole_assoc_01411874A3416866B28ADD632AA1DF36" ToRole="FromRole_assoc_01411874A3416866B28ADD632AA1DF36"/>
@@ -342,9 +396,12 @@
                 <Key>
                     <PropertyRef Name="RequestId"/>
                     <PropertyRef Name="Plant"/>
+                    <PropertyRef Name="IsActiveEntity"/>
                 </Key>
-                <Property Name="RequestId" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Request ID"/>
-                <Property Name="Plant" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Plant"/>
+                <Property Name="Delete_mc" Type="Edm.Boolean" sap:label="Dyn. Method Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Update_mc" Type="Edm.Boolean" sap:label="Dyn. Method Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RequestId" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Request ID" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Plant" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Plant" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="ProductGroup" Type="Edm.String" MaxLength="9" sap:display-format="UpperCase" sap:label="Material Group"/>
                 <Property Name="PurchasingGroup" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Purchasing Group"/>
                 <Property Name="PurchasingUom" Type="Edm.String" MaxLength="3" sap:label="Order Unit" sap:quickinfo="Purchase Order Unit of Measure" sap:semantics="unit-of-measure"/>
@@ -355,20 +412,37 @@
                 <Property Name="ChangedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Changed By" sap:quickinfo="Last Changed By User"/>
                 <Property Name="ChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Changed On" sap:quickinfo="Last Change Date Time"/>
                 <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Changed On" sap:quickinfo="Local Instance Last Change Date Time"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" sap:label="Has Draft" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="DraftEntityCreationDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Draft Created On" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="DraftEntityLastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Draft Last Changed On" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" sap:label="Has active" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" sap:label="Is active" sap:creatable="false" sap:updatable="false"/>
                 <NavigationProperty Name="to_Plant" Relationship="cds_zpmd_ui_product_req.assoc_2B5EBC380D2F68BD3199BE2C50A5F2C0" FromRole="ToRole_assoc_2B5EBC380D2F68BD3199BE2C50A5F2C0" ToRole="FromRole_assoc_2B5EBC380D2F68BD3199BE2C50A5F2C0"/>
+                <NavigationProperty Name="DraftAdministrativeData" Relationship="cds_zpmd_ui_product_req.assoc_A8999E4F63213557481A72337AD51824" FromRole="FromRole_assoc_A8999E4F63213557481A72337AD51824" ToRole="ToRole_assoc_A8999E4F63213557481A72337AD51824"/>
+                <NavigationProperty Name="SiblingEntity" Relationship="cds_zpmd_ui_product_req.assoc_2B66930BD4A34388359BAE2F598126A4" FromRole="FromRole_assoc_2B66930BD4A34388359BAE2F598126A4" ToRole="ToRole_assoc_2B66930BD4A34388359BAE2F598126A4"/>
+                <NavigationProperty Name="to_Request" Relationship="cds_zpmd_ui_product_req.assoc_88EDFF61C6396B97316AE5F683FBD60F" FromRole="FromRole_assoc_88EDFF61C6396B97316AE5F683FBD60F" ToRole="ToRole_assoc_88EDFF61C6396B97316AE5F683FBD60F"/>
             </EntityType>
             <EntityType Name="headerType" sap:label="Consumption View for Request Header" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="RequestId"/>
+                    <PropertyRef Name="IsActiveEntity"/>
                 </Key>
-                <Property Name="RequestId" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Request ID"/>
+                <Property Name="Edit_ac" Type="Edm.Boolean" sap:label="Dyn. Action Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Delete_mc" Type="Edm.Boolean" sap:label="Dyn. Method Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Update_mc" Type="Edm.Boolean" sap:label="Dyn. Method Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="to_Plant_oc" Type="Edm.Boolean" sap:label="Dynamic CbA-Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RequestId" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Request ID" sap:updatable="false"/>
                 <Property Name="Requestor" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Requestor" sap:quickinfo="User Name"/>
                 <Property Name="RequestTstmpl" Type="Edm.DateTimeOffset" Precision="7" sap:label="Requested On" sap:quickinfo="Creation Date Time"/>
-                <Property Name="OverallStatus" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Overall Status"/>
+                <Property Name="OverallStatus" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:text="OverallStatusText" sap:label="Overall Status" sap:value-list="standard"/>
+                <Property Name="OverallStatusText" Type="Edm.String" MaxLength="80" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="Cataloguer" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Cataloguer" sap:quickinfo="User Name"/>
-                <Property Name="CatStatus" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Cataloguer Review" sap:quickinfo="Cataloguer Status"/>
-                <Property Name="ProcStatus" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Procurement Review" sap:quickinfo="Procurement Status"/>
-                <Property Name="ScmStatus" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="SCM Review" sap:quickinfo="SCM Status"/>
+                <Property Name="CatStatus" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:text="CatalogStatusText" sap:label="Cataloguer Review" sap:quickinfo="Cataloguer Status" sap:value-list="standard"/>
+                <Property Name="CatalogStatusText" Type="Edm.String" MaxLength="80" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="ProcStatus" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:text="ProcStatusText" sap:label="Procurement Review" sap:quickinfo="Procurement Status" sap:value-list="standard"/>
+                <Property Name="ProcStatusText" Type="Edm.String" MaxLength="80" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="ScmStatus" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:text="ScmStatusText" sap:label="SCM Review" sap:quickinfo="SCM Status" sap:value-list="standard"/>
+                <Property Name="ScmStatusText" Type="Edm.String" MaxLength="80" sap:creatable="false" sap:updatable="false"/>
                 <Property Name="ProcCreator" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Procurement Creator" sap:quickinfo="User Name"/>
                 <Property Name="ScmCreator" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="SCM Creator" sap:quickinfo="User Name"/>
                 <Property Name="Comments" Type="Edm.String" MaxLength="80" sap:label="Comments"/>
@@ -384,11 +458,31 @@
                 <Property Name="MfrPartNr" Type="Edm.String" MaxLength="40" sap:display-format="UpperCase" sap:label="Manufacturer Part Number"/>
                 <Property Name="Manufacturer" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Manufacturer" sap:quickinfo="Supplier's Account Number"/>
                 <Property Name="RefMaterial" Type="Edm.String" MaxLength="18" sap:display-format="UpperCase" sap:label="Reference Material" sap:quickinfo="Material Number"/>
+                <Property Name="ProductGroup" Type="Edm.String" MaxLength="9" sap:display-format="UpperCase" sap:label="ProductGroup" sap:quickinfo="Material Group"/>
+                <Property Name="PurchasingGroup" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="MaterialGroup" sap:quickinfo="Purchasing Group"/>
+                <Property Name="PurchasingUom" Type="Edm.String" MaxLength="3" sap:label="MaterialGroup" sap:quickinfo="Purchase Order Unit of Measure" sap:semantics="unit-of-measure"/>
+                <Property Name="PoText" Type="Edm.String" MaxLength="255" sap:label="PoText"/>
+                <Property Name="ValuationClass" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="ValuationClass" sap:quickinfo="Valuation Class"/>
+                <Property Name="IsStockRepl" Type="Edm.Boolean" sap:label="Is Stock Replenishment" sap:quickinfo="Truth Value: True/False"/>
+                <Property Name="MrpType" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="MRP Type"/>
+                <Property Name="LotSize" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="MRP Controller" sap:quickinfo="Lot Sizing Procedure in Materials Planning"/>
+                <Property Name="ReorderPoint" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="ReorderPointUnit" sap:label="Reorder Point"/>
+                <Property Name="MaxStock" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="MaxStockUnit" sap:label="Maximum Stock Level"/>
+                <Property Name="ReorderPointUnit" Type="Edm.String" MaxLength="3" sap:label="Reorder Point Unit" sap:quickinfo="Base Unit of Measure" sap:semantics="unit-of-measure"/>
+                <Property Name="MaxStockUnit" Type="Edm.String" MaxLength="3" sap:label="Maximum Stock Unit" sap:quickinfo="Base Unit of Measure" sap:semantics="unit-of-measure"/>
                 <Property Name="CreatedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Created By" sap:quickinfo="Created By User"/>
                 <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Created At" sap:quickinfo="Creation Date Time"/>
                 <Property Name="ChangedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Changed By" sap:quickinfo="Last Changed By User"/>
                 <Property Name="ChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Changed At" sap:quickinfo="Last Change Date Time"/>
                 <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Changed On" sap:quickinfo="Local Instance Last Change Date Time"/>
+                <Property Name="Description" Type="Edm.String" MaxLength="80" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" sap:label="Has Draft" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="DraftEntityCreationDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Draft Created On" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="DraftEntityLastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Draft Last Changed On" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" sap:label="Has active" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" sap:label="Is active" sap:creatable="false" sap:updatable="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Relationship="cds_zpmd_ui_product_req.assoc_B73DC6377A83E497CC2EB1B0379116B8" FromRole="FromRole_assoc_B73DC6377A83E497CC2EB1B0379116B8" ToRole="ToRole_assoc_B73DC6377A83E497CC2EB1B0379116B8"/>
+                <NavigationProperty Name="SiblingEntity" Relationship="cds_zpmd_ui_product_req.assoc_6B4BA4B874215EAF03CF6B3796B67A94" FromRole="FromRole_assoc_6B4BA4B874215EAF03CF6B3796B67A94" ToRole="ToRole_assoc_6B4BA4B874215EAF03CF6B3796B67A94"/>
                 <NavigationProperty Name="to_BaseUOM" Relationship="cds_zpmd_ui_product_req.assoc_F6B551205A5FAB45FC6F36AD9A92C640" FromRole="FromRole_assoc_F6B551205A5FAB45FC6F36AD9A92C640" ToRole="ToRole_assoc_F6B551205A5FAB45FC6F36AD9A92C640"/>
                 <NavigationProperty Name="to_Manufacturer" Relationship="cds_zpmd_ui_product_req.assoc_FF1634E510636703337949510A83AC04" FromRole="FromRole_assoc_FF1634E510636703337949510A83AC04" ToRole="ToRole_assoc_FF1634E510636703337949510A83AC04"/>
                 <NavigationProperty Name="to_Plant" Relationship="cds_zpmd_ui_product_req.assoc_01411874A3416866B28ADD632AA1DF36" FromRole="FromRole_assoc_01411874A3416866B28ADD632AA1DF36" ToRole="ToRole_assoc_01411874A3416866B28ADD632AA1DF36"/>
@@ -399,22 +493,53 @@
                 <Key>
                     <PropertyRef Name="RequestId"/>
                     <PropertyRef Name="Plant"/>
+                    <PropertyRef Name="IsActiveEntity"/>
                 </Key>
-                <Property Name="RequestId" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Request ID"/>
-                <Property Name="Plant" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Plant"/>
-                <Property Name="IsStockRepl" Type="Edm.Boolean" sap:label="Truth Value" sap:quickinfo="Truth Value: True/False"/>
+                <Property Name="Delete_mc" Type="Edm.Boolean" sap:label="Dyn. Method Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Update_mc" Type="Edm.Boolean" sap:label="Dyn. Method Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RequestId" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Request ID" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Plant" Type="Edm.String" Nullable="false" MaxLength="4" sap:display-format="UpperCase" sap:label="Plant" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="IsStockRepl" Type="Edm.Boolean" sap:label="Is Stock Replenishment" sap:quickinfo="Truth Value: True/False"/>
                 <Property Name="MrpType" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="MRP Type"/>
-                <Property Name="LotSize" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Lot Sizing Procedure" sap:quickinfo="Lot Sizing Procedure in Materials Planning"/>
+                <Property Name="LotSize" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Lot Size" sap:quickinfo="Lot Sizing Procedure in Materials Planning"/>
                 <Property Name="ReorderPoint" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="ReorderPointUnit" sap:label="Reorder Point"/>
-                <Property Name="MaxStock" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="MaxStockUnit" sap:label="Maximum Stock Level"/>
-                <Property Name="ReorderPointUnit" Type="Edm.String" MaxLength="3" sap:label="Base Unit of Measure" sap:semantics="unit-of-measure"/>
-                <Property Name="MaxStockUnit" Type="Edm.String" MaxLength="3" sap:label="Base Unit of Measure" sap:semantics="unit-of-measure"/>
+                <Property Name="MaxStock" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="MaxStockUnit" sap:label="Maximum Stock" sap:quickinfo="Maximum Stock Level"/>
+                <Property Name="ReorderPointUnit" Type="Edm.String" MaxLength="3" sap:label="Lot Size Unit" sap:quickinfo="Base Unit of Measure" sap:semantics="unit-of-measure"/>
+                <Property Name="MaxStockUnit" Type="Edm.String" MaxLength="3" sap:label="Maximum Stock Unit" sap:quickinfo="Base Unit of Measure" sap:semantics="unit-of-measure"/>
                 <Property Name="CreatedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Created By" sap:quickinfo="Created By User"/>
                 <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Created On" sap:quickinfo="Creation Date Time"/>
                 <Property Name="ChangedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Changed By" sap:quickinfo="Last Changed By User"/>
                 <Property Name="ChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Changed On" sap:quickinfo="Last Change Date Time"/>
                 <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Changed On" sap:quickinfo="Local Instance Last Change Date Time"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" sap:label="Has Draft" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="DraftEntityCreationDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Draft Created On" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="DraftEntityLastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Draft Last Changed On" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" sap:label="Has active" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" sap:label="Is active" sap:creatable="false" sap:updatable="false"/>
                 <NavigationProperty Name="to_Plant" Relationship="cds_zpmd_ui_product_req.assoc_A14017234DD1D1B16E2E6A5C703D9669" FromRole="ToRole_assoc_A14017234DD1D1B16E2E6A5C703D9669" ToRole="FromRole_assoc_A14017234DD1D1B16E2E6A5C703D9669"/>
+                <NavigationProperty Name="DraftAdministrativeData" Relationship="cds_zpmd_ui_product_req.assoc_309F93F40F99C0D6DA66F460783E7335" FromRole="FromRole_assoc_309F93F40F99C0D6DA66F460783E7335" ToRole="ToRole_assoc_309F93F40F99C0D6DA66F460783E7335"/>
+                <NavigationProperty Name="SiblingEntity" Relationship="cds_zpmd_ui_product_req.assoc_4D3E3403CB4CA1BBF2913BEDCA9259ED" FromRole="FromRole_assoc_4D3E3403CB4CA1BBF2913BEDCA9259ED" ToRole="ToRole_assoc_4D3E3403CB4CA1BBF2913BEDCA9259ED"/>
+                <NavigationProperty Name="to_Request" Relationship="cds_zpmd_ui_product_req.assoc_E852065D4E6A60BAF5BD84087956BFCC" FromRole="FromRole_assoc_E852065D4E6A60BAF5BD84087956BFCC" ToRole="ToRole_assoc_E852065D4E6A60BAF5BD84087956BFCC"/>
+            </EntityType>
+            <EntityType Name="ZPMD_I_DEFAULTS_OS_VHType" sap:label="Interface view for Overall Status" sap:value-list="true" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="DefType"/>
+                    <PropertyRef Name="DefKey"/>
+                </Key>
+                <Property Name="DefType" Type="Edm.String" Nullable="false" MaxLength="30"/>
+                <Property Name="DefKey" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="SortOrder" Type="Edm.String" MaxLength="4" sap:display-format="NonNegative"/>
+                <Property Name="Description" Type="Edm.String" MaxLength="80"/>
+            </EntityType>
+            <EntityType Name="ZPMD_I_DEFAULTS_STATUS_VHType" sap:label="Interface view for Stage Status" sap:value-list="true" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="DefType"/>
+                    <PropertyRef Name="DefKey"/>
+                </Key>
+                <Property Name="DefType" Type="Edm.String" Nullable="false" MaxLength="30"/>
+                <Property Name="DefKey" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="SortOrder" Type="Edm.String" MaxLength="4" sap:display-format="NonNegative"/>
+                <Property Name="Description" Type="Edm.String" MaxLength="80"/>
             </EntityType>
             <EntityType Name="SAP__Currency" sap:content-version="1">
                 <Key>
@@ -539,6 +664,9 @@
                 <Property Name="FIELD_VALUE" Type="Edm.String" Nullable="false" MaxLength="10"/>
                 <Property Name="DESCRIPTION" Type="Edm.String"/>
             </EntityType>
+            <ComplexType Name="DummyFunctionImportResult">
+                <Property Name="IsInvalid" Type="Edm.Boolean" sap:label="TRUE"/>
+            </ComplexType>
             <ComplexType Name="SAP__FitToPage">
                 <Property Name="ErrorRecoveryBehavior" Type="Edm.String" Nullable="false" MaxLength="8" sap:label="Error behavior" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="IsEnabled" Type="Edm.Boolean" Nullable="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
@@ -547,6 +675,14 @@
             <ComplexType Name="SAP__HeaderFooterField">
                 <Property Name="Type" Type="Edm.String" Nullable="false" MaxLength="256" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </ComplexType>
+            <Association Name="assoc_53F2D8DEF8D6C68BBA0389E7BF49663D" sap:content-version="1">
+                <End Type="cds_zpmd_ui_product_req.PlantType" Multiplicity="1" Role="FromRole_assoc_53F2D8DEF8D6C68BBA0389E7BF49663D"/>
+                <End Type="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType" Multiplicity="0..1" Role="ToRole_assoc_53F2D8DEF8D6C68BBA0389E7BF49663D"/>
+            </Association>
+            <Association Name="assoc_783C44B3DD8BD27FFB49D331478C2510" sap:content-version="1">
+                <End Type="cds_zpmd_ui_product_req.PlantType" Multiplicity="1" Role="FromRole_assoc_783C44B3DD8BD27FFB49D331478C2510"/>
+                <End Type="cds_zpmd_ui_product_req.PlantType" Multiplicity="0..1" Role="ToRole_assoc_783C44B3DD8BD27FFB49D331478C2510"/>
+            </Association>
             <Association Name="assoc_2B5EBC380D2F68BD3199BE2C50A5F2C0" sap:content-version="1">
                 <End Type="cds_zpmd_ui_product_req.PlantType" Multiplicity="1" Role="FromRole_assoc_2B5EBC380D2F68BD3199BE2C50A5F2C0">
                     <OnDelete Action="Cascade"/>
@@ -590,6 +726,34 @@
                         <PropertyRef Name="PlantSupplier"/>
                     </Dependent>
                 </ReferentialConstraint>
+            </Association>
+            <Association Name="assoc_309F93F40F99C0D6DA66F460783E7335" sap:content-version="1">
+                <End Type="cds_zpmd_ui_product_req.ScmType" Multiplicity="1" Role="FromRole_assoc_309F93F40F99C0D6DA66F460783E7335"/>
+                <End Type="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType" Multiplicity="0..1" Role="ToRole_assoc_309F93F40F99C0D6DA66F460783E7335"/>
+            </Association>
+            <Association Name="assoc_4D3E3403CB4CA1BBF2913BEDCA9259ED" sap:content-version="1">
+                <End Type="cds_zpmd_ui_product_req.ScmType" Multiplicity="1" Role="FromRole_assoc_4D3E3403CB4CA1BBF2913BEDCA9259ED"/>
+                <End Type="cds_zpmd_ui_product_req.ScmType" Multiplicity="0..1" Role="ToRole_assoc_4D3E3403CB4CA1BBF2913BEDCA9259ED"/>
+            </Association>
+            <Association Name="assoc_E852065D4E6A60BAF5BD84087956BFCC" sap:content-version="1">
+                <End Type="cds_zpmd_ui_product_req.ScmType" Multiplicity="1" Role="FromRole_assoc_E852065D4E6A60BAF5BD84087956BFCC"/>
+                <End Type="cds_zpmd_ui_product_req.headerType" Multiplicity="1" Role="ToRole_assoc_E852065D4E6A60BAF5BD84087956BFCC"/>
+                <ReferentialConstraint>
+                    <Principal Role="ToRole_assoc_E852065D4E6A60BAF5BD84087956BFCC">
+                        <PropertyRef Name="RequestId"/>
+                    </Principal>
+                    <Dependent Role="FromRole_assoc_E852065D4E6A60BAF5BD84087956BFCC">
+                        <PropertyRef Name="RequestId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="assoc_B73DC6377A83E497CC2EB1B0379116B8" sap:content-version="1">
+                <End Type="cds_zpmd_ui_product_req.headerType" Multiplicity="1" Role="FromRole_assoc_B73DC6377A83E497CC2EB1B0379116B8"/>
+                <End Type="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType" Multiplicity="0..1" Role="ToRole_assoc_B73DC6377A83E497CC2EB1B0379116B8"/>
+            </Association>
+            <Association Name="assoc_6B4BA4B874215EAF03CF6B3796B67A94" sap:content-version="1">
+                <End Type="cds_zpmd_ui_product_req.headerType" Multiplicity="1" Role="FromRole_assoc_6B4BA4B874215EAF03CF6B3796B67A94"/>
+                <End Type="cds_zpmd_ui_product_req.headerType" Multiplicity="0..1" Role="ToRole_assoc_6B4BA4B874215EAF03CF6B3796B67A94"/>
             </Association>
             <Association Name="assoc_F6B551205A5FAB45FC6F36AD9A92C640" sap:content-version="1">
                 <End Type="cds_zpmd_ui_product_req.headerType" Multiplicity="1" Role="FromRole_assoc_F6B551205A5FAB45FC6F36AD9A92C640"/>
@@ -717,6 +881,26 @@
                     </Dependent>
                 </ReferentialConstraint>
             </Association>
+            <Association Name="assoc_A8999E4F63213557481A72337AD51824" sap:content-version="1">
+                <End Type="cds_zpmd_ui_product_req.ProcType" Multiplicity="1" Role="FromRole_assoc_A8999E4F63213557481A72337AD51824"/>
+                <End Type="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType" Multiplicity="0..1" Role="ToRole_assoc_A8999E4F63213557481A72337AD51824"/>
+            </Association>
+            <Association Name="assoc_2B66930BD4A34388359BAE2F598126A4" sap:content-version="1">
+                <End Type="cds_zpmd_ui_product_req.ProcType" Multiplicity="1" Role="FromRole_assoc_2B66930BD4A34388359BAE2F598126A4"/>
+                <End Type="cds_zpmd_ui_product_req.ProcType" Multiplicity="0..1" Role="ToRole_assoc_2B66930BD4A34388359BAE2F598126A4"/>
+            </Association>
+            <Association Name="assoc_88EDFF61C6396B97316AE5F683FBD60F" sap:content-version="1">
+                <End Type="cds_zpmd_ui_product_req.ProcType" Multiplicity="1" Role="FromRole_assoc_88EDFF61C6396B97316AE5F683FBD60F"/>
+                <End Type="cds_zpmd_ui_product_req.headerType" Multiplicity="1" Role="ToRole_assoc_88EDFF61C6396B97316AE5F683FBD60F"/>
+                <ReferentialConstraint>
+                    <Principal Role="ToRole_assoc_88EDFF61C6396B97316AE5F683FBD60F">
+                        <PropertyRef Name="RequestId"/>
+                    </Principal>
+                    <Dependent Role="FromRole_assoc_88EDFF61C6396B97316AE5F683FBD60F">
+                        <PropertyRef Name="RequestId"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
             <EntityContainer Name="cds_zpmd_ui_product_req_Entities" m:IsDefaultEntityContainer="true" sap:message-scope-supported="true" sap:supported-formats="atom json xlsx pdf">
                 <EntitySet Name="SAP__Currencies" EntityType="cds_zpmd_ui_product_req.SAP__Currency" sap:content-version="1"/>
                 <EntitySet Name="SAP__UnitsOfMeasure" EntityType="cds_zpmd_ui_product_req.SAP__UnitOfMeasure" sap:content-version="1"/>
@@ -731,6 +915,8 @@
                 <EntitySet Name="SAP__PDFFooterSet" EntityType="cds_zpmd_ui_product_req.SAP__PDFFooter" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="SAP__ValueHelpSet" EntityType="cds_zpmd_ui_product_req.SAP__ValueHelp" sap:content-version="1"/>
                 <EntitySet Name="I_Customer_VH" EntityType="cds_zpmd_ui_product_req.I_Customer_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="I_DraftAdministrativeData" EntityType="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="I_DraftAdministrativeUserVH" EntityType="cds_zpmd_ui_product_req.I_DraftAdministrativeUserVHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="MRPType" EntityType="cds_zpmd_ui_product_req.MRPTypeType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="Plant_VH" EntityType="cds_zpmd_ui_product_req.Plant_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="ProductGroup" EntityType="cds_zpmd_ui_product_req.ProductGroupType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
@@ -739,13 +925,19 @@
                 <EntitySet Name="Supplier" EntityType="cds_zpmd_ui_product_req.SupplierType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
                 <EntitySet Name="I_Supplier_VH" EntityType="cds_zpmd_ui_product_req.I_Supplier_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
                 <EntitySet Name="UnitOfMeasure" EntityType="cds_zpmd_ui_product_req.UnitOfMeasureType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
-                <EntitySet Name="Plant" EntityType="cds_zpmd_ui_product_req.PlantType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
-                <EntitySet Name="Proc" EntityType="cds_zpmd_ui_product_req.ProcType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
-                <EntitySet Name="header" EntityType="cds_zpmd_ui_product_req.headerType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
-                <EntitySet Name="Scm" EntityType="cds_zpmd_ui_product_req.ScmType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+                <EntitySet Name="Plant" EntityType="cds_zpmd_ui_product_req.PlantType" sap:content-version="1" sap:deletable-path="Delete_mc" sap:updatable-path="Update_mc"/>
+                <EntitySet Name="Proc" EntityType="cds_zpmd_ui_product_req.ProcType" sap:content-version="1" sap:deletable-path="Delete_mc" sap:updatable-path="Update_mc"/>
+                <EntitySet Name="header" EntityType="cds_zpmd_ui_product_req.headerType" sap:searchable="true" sap:content-version="1" sap:deletable-path="Delete_mc" sap:updatable-path="Update_mc"/>
+                <EntitySet Name="Scm" EntityType="cds_zpmd_ui_product_req.ScmType" sap:content-version="1" sap:deletable-path="Delete_mc" sap:updatable-path="Update_mc"/>
+                <EntitySet Name="ZPMD_I_DEFAULTS_OS_VH" EntityType="cds_zpmd_ui_product_req.ZPMD_I_DEFAULTS_OS_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="ZPMD_I_DEFAULTS_STATUS_VH" EntityType="cds_zpmd_ui_product_req.ZPMD_I_DEFAULTS_STATUS_VHType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
                 <AssociationSet Name="assoc_A14017234DD1D1B16E2E6A5C703D9669" Association="cds_zpmd_ui_product_req.assoc_A14017234DD1D1B16E2E6A5C703D9669" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="Plant" Role="FromRole_assoc_A14017234DD1D1B16E2E6A5C703D9669"/>
                     <End EntitySet="Scm" Role="ToRole_assoc_A14017234DD1D1B16E2E6A5C703D9669"/>
+                </AssociationSet>
+                <AssociationSet Name="assoc_309F93F40F99C0D6DA66F460783E7335" Association="cds_zpmd_ui_product_req.assoc_309F93F40F99C0D6DA66F460783E7335" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="Scm" Role="FromRole_assoc_309F93F40F99C0D6DA66F460783E7335"/>
+                    <End EntitySet="I_DraftAdministrativeData" Role="ToRole_assoc_309F93F40F99C0D6DA66F460783E7335"/>
                 </AssociationSet>
                 <AssociationSet Name="to_FooterSet" Association="cds_zpmd_ui_product_req.to_Footer" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="SAP__MyDocumentDescriptions" Role="FromRole_to_Footer"/>
@@ -755,13 +947,25 @@
                     <End EntitySet="SAP__MyDocumentDescriptions" Role="FromRole_to_header"/>
                     <End EntitySet="SAP__PDFHeaderSet" Role="ToRole_to_header"/>
                 </AssociationSet>
+                <AssociationSet Name="assoc_6B4BA4B874215EAF03CF6B3796B67A94" Association="cds_zpmd_ui_product_req.assoc_6B4BA4B874215EAF03CF6B3796B67A94" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="header" Role="FromRole_assoc_6B4BA4B874215EAF03CF6B3796B67A94"/>
+                    <End EntitySet="header" Role="ToRole_assoc_6B4BA4B874215EAF03CF6B3796B67A94"/>
+                </AssociationSet>
                 <AssociationSet Name="to_formatSet" Association="cds_zpmd_ui_product_req.to_format" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="SAP__MyDocumentDescriptions" Role="FromRole_to_format"/>
                     <End EntitySet="SAP__FormatSet" Role="ToRole_to_format"/>
                 </AssociationSet>
+                <AssociationSet Name="assoc_E852065D4E6A60BAF5BD84087956BFCC" Association="cds_zpmd_ui_product_req.assoc_E852065D4E6A60BAF5BD84087956BFCC" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="Scm" Role="FromRole_assoc_E852065D4E6A60BAF5BD84087956BFCC"/>
+                    <End EntitySet="header" Role="ToRole_assoc_E852065D4E6A60BAF5BD84087956BFCC"/>
+                </AssociationSet>
                 <AssociationSet Name="to_pdfstandardSet" Association="cds_zpmd_ui_product_req.to_pdfstandard" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="SAP__MyDocumentDescriptions" Role="FromRole_to_pdfstandard"/>
                     <End EntitySet="SAP__PDFStandardSet" Role="ToRole_to_pdfstandard"/>
+                </AssociationSet>
+                <AssociationSet Name="assoc_2B66930BD4A34388359BAE2F598126A4" Association="cds_zpmd_ui_product_req.assoc_2B66930BD4A34388359BAE2F598126A4" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="Proc" Role="FromRole_assoc_2B66930BD4A34388359BAE2F598126A4"/>
+                    <End EntitySet="Proc" Role="ToRole_assoc_2B66930BD4A34388359BAE2F598126A4"/>
                 </AssociationSet>
                 <AssociationSet Name="assoc_2B5EBC380D2F68BD3199BE2C50A5F2C0" Association="cds_zpmd_ui_product_req.assoc_2B5EBC380D2F68BD3199BE2C50A5F2C0" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="Plant" Role="FromRole_assoc_2B5EBC380D2F68BD3199BE2C50A5F2C0"/>
@@ -775,6 +979,18 @@
                     <End EntitySet="header" Role="FromRole_assoc_01411874A3416866B28ADD632AA1DF36"/>
                     <End EntitySet="Plant" Role="ToRole_assoc_01411874A3416866B28ADD632AA1DF36"/>
                 </AssociationSet>
+                <AssociationSet Name="assoc_783C44B3DD8BD27FFB49D331478C2510" Association="cds_zpmd_ui_product_req.assoc_783C44B3DD8BD27FFB49D331478C2510" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="Plant" Role="FromRole_assoc_783C44B3DD8BD27FFB49D331478C2510"/>
+                    <End EntitySet="Plant" Role="ToRole_assoc_783C44B3DD8BD27FFB49D331478C2510"/>
+                </AssociationSet>
+                <AssociationSet Name="assoc_4D3E3403CB4CA1BBF2913BEDCA9259ED" Association="cds_zpmd_ui_product_req.assoc_4D3E3403CB4CA1BBF2913BEDCA9259ED" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="Scm" Role="FromRole_assoc_4D3E3403CB4CA1BBF2913BEDCA9259ED"/>
+                    <End EntitySet="Scm" Role="ToRole_assoc_4D3E3403CB4CA1BBF2913BEDCA9259ED"/>
+                </AssociationSet>
+                <AssociationSet Name="assoc_B73DC6377A83E497CC2EB1B0379116B8" Association="cds_zpmd_ui_product_req.assoc_B73DC6377A83E497CC2EB1B0379116B8" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="header" Role="FromRole_assoc_B73DC6377A83E497CC2EB1B0379116B8"/>
+                    <End EntitySet="I_DraftAdministrativeData" Role="ToRole_assoc_B73DC6377A83E497CC2EB1B0379116B8"/>
+                </AssociationSet>
                 <AssociationSet Name="to_tablecolumnsSet" Association="cds_zpmd_ui_product_req.to_tablecolumns" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="SAP__MyDocumentDescriptions" Role="FromRole_to_tablecolumns"/>
                     <End EntitySet="SAP__TableColumnsSet" Role="ToRole_to_tablecolumns"/>
@@ -786,6 +1002,18 @@
                 <AssociationSet Name="to_signatureSet" Association="cds_zpmd_ui_product_req.to_signature" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="SAP__MyDocumentDescriptions" Role="FromRole_to_signature"/>
                     <End EntitySet="SAP__SignatureSet" Role="ToRole_to_signature"/>
+                </AssociationSet>
+                <AssociationSet Name="assoc_53F2D8DEF8D6C68BBA0389E7BF49663D" Association="cds_zpmd_ui_product_req.assoc_53F2D8DEF8D6C68BBA0389E7BF49663D" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="Plant" Role="FromRole_assoc_53F2D8DEF8D6C68BBA0389E7BF49663D"/>
+                    <End EntitySet="I_DraftAdministrativeData" Role="ToRole_assoc_53F2D8DEF8D6C68BBA0389E7BF49663D"/>
+                </AssociationSet>
+                <AssociationSet Name="assoc_A8999E4F63213557481A72337AD51824" Association="cds_zpmd_ui_product_req.assoc_A8999E4F63213557481A72337AD51824" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="Proc" Role="FromRole_assoc_A8999E4F63213557481A72337AD51824"/>
+                    <End EntitySet="I_DraftAdministrativeData" Role="ToRole_assoc_A8999E4F63213557481A72337AD51824"/>
+                </AssociationSet>
+                <AssociationSet Name="assoc_88EDFF61C6396B97316AE5F683FBD60F" Association="cds_zpmd_ui_product_req.assoc_88EDFF61C6396B97316AE5F683FBD60F" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="Proc" Role="FromRole_assoc_88EDFF61C6396B97316AE5F683FBD60F"/>
+                    <End EntitySet="header" Role="ToRole_assoc_88EDFF61C6396B97316AE5F683FBD60F"/>
                 </AssociationSet>
                 <AssociationSet Name="assoc_D41E664AAE90D84DBD292DC5822E329B" Association="cds_zpmd_ui_product_req.assoc_D41E664AAE90D84DBD292DC5822E329B" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
                     <End EntitySet="header" Role="FromRole_assoc_D41E664AAE90D84DBD292DC5822E329B"/>
@@ -807,8 +1035,494 @@
                     <End EntitySet="SAP__MyDocumentDescriptions" Role="FromRole_to_Hierarchy"/>
                     <End EntitySet="SAP__HierarchySet" Role="ToRole_to_Hierarchy"/>
                 </AssociationSet>
+                <FunctionImport Name="headerActivate" ReturnType="cds_zpmd_ui_product_req.headerType" EntitySet="header" m:HttpMethod="POST" sap:action-for="cds_zpmd_ui_product_req.headerType">
+                    <Parameter Name="RequestId" Type="Edm.String" Mode="In" MaxLength="10" sap:label="Request ID"/>
+                    <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Mode="In" sap:label="Is active"/>
+                </FunctionImport>
+                <FunctionImport Name="headerDiscard" ReturnType="cds_zpmd_ui_product_req.DummyFunctionImportResult" m:HttpMethod="POST" sap:action-for="cds_zpmd_ui_product_req.headerType">
+                    <Parameter Name="RequestId" Type="Edm.String" Mode="In" MaxLength="10" sap:label="Request ID"/>
+                    <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Mode="In" sap:label="Is active"/>
+                </FunctionImport>
+                <FunctionImport Name="headerEdit" ReturnType="cds_zpmd_ui_product_req.headerType" EntitySet="header" m:HttpMethod="POST" sap:action-for="cds_zpmd_ui_product_req.headerType" sap:applicable-path="Edit_ac">
+                    <Parameter Name="RequestId" Type="Edm.String" Mode="In" MaxLength="10" sap:label="Request ID"/>
+                    <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Mode="In" sap:label="Is active"/>
+                    <Parameter Name="PreserveChanges" Type="Edm.Boolean" Mode="In" Nullable="true" sap:label="TRUE"/>
+                </FunctionImport>
+                <FunctionImport Name="headerPrepare" ReturnType="cds_zpmd_ui_product_req.DummyFunctionImportResult" m:HttpMethod="POST" sap:action-for="cds_zpmd_ui_product_req.headerType">
+                    <Parameter Name="RequestId" Type="Edm.String" Mode="In" MaxLength="10" sap:label="Request ID"/>
+                    <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Mode="In" sap:label="Is active"/>
+                </FunctionImport>
+                <FunctionImport Name="headerResume" ReturnType="cds_zpmd_ui_product_req.DummyFunctionImportResult" m:HttpMethod="POST" sap:action-for="cds_zpmd_ui_product_req.headerType">
+                    <Parameter Name="RequestId" Type="Edm.String" Mode="In" MaxLength="10" sap:label="Request ID"/>
+                    <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Mode="In" sap:label="Is active"/>
+                </FunctionImport>
             </EntityContainer>
             <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
+            <Annotations Target="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/header" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.DraftRoot">
+                    <Record>
+                        <PropertyValue Property="ActivationAction" String="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/headerActivate"/>
+                        <PropertyValue Property="DiscardAction" String="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/headerDiscard"/>
+                        <PropertyValue Property="EditAction" String="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/headerEdit"/>
+                        <PropertyValue Property="PreparationAction" String="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/headerPrepare"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Path="Delete_mc"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonFilterableProperties">
+                            <Collection>
+                                <PropertyPath>Edit_ac</PropertyPath>
+                                <PropertyPath>Delete_mc</PropertyPath>
+                                <PropertyPath>Update_mc</PropertyPath>
+                                <PropertyPath>to_Plant_oc</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="DraftEntityCreationDateTime"/>
+                                    <PropertyValue Property="AllowedExpressions" String="SingleRange"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="DraftEntityLastChangeDateTime"/>
+                                    <PropertyValue Property="AllowedExpressions" String="SingleRange"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="true"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="RestrictedProperties">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="DraftAdministrativeData"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="SiblingEntity"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_BaseUOM"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Manufacturer"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Plant"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Path="to_Plant_oc"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_ProductType"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_ReqPlant"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
+                </Annotation>
+                <Annotation Term="Capabilities.SortRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonSortableProperties">
+                            <Collection>
+                                <PropertyPath>Edit_ac</PropertyPath>
+                                <PropertyPath>Delete_mc</PropertyPath>
+                                <PropertyPath>Update_mc</PropertyPath>
+                                <PropertyPath>to_Plant_oc</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Path="Update_mc"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/Proc" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.DraftNode">
+                    <Record/>
+                </Annotation>
+                <Annotation Term="Common.DraftActivationVia">
+                    <Collection>
+                        <String>cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/header</String>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Path="Delete_mc"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonFilterableProperties">
+                            <Collection>
+                                <PropertyPath>Delete_mc</PropertyPath>
+                                <PropertyPath>Update_mc</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="DraftEntityCreationDateTime"/>
+                                    <PropertyValue Property="AllowedExpressions" String="SingleRange"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="DraftEntityLastChangeDateTime"/>
+                                    <PropertyValue Property="AllowedExpressions" String="SingleRange"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="RestrictedProperties">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="DraftAdministrativeData"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="SiblingEntity"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Plant"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Request"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
+                </Annotation>
+                <Annotation Term="Capabilities.SortRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonSortableProperties">
+                            <Collection>
+                                <PropertyPath>Delete_mc</PropertyPath>
+                                <PropertyPath>Update_mc</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Path="Update_mc"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/Scm" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.DraftNode">
+                    <Record/>
+                </Annotation>
+                <Annotation Term="Common.DraftActivationVia">
+                    <Collection>
+                        <String>cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/header</String>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Path="Delete_mc"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonFilterableProperties">
+                            <Collection>
+                                <PropertyPath>Delete_mc</PropertyPath>
+                                <PropertyPath>Update_mc</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="DraftEntityCreationDateTime"/>
+                                    <PropertyValue Property="AllowedExpressions" String="SingleRange"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="DraftEntityLastChangeDateTime"/>
+                                    <PropertyValue Property="AllowedExpressions" String="SingleRange"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="RestrictedProperties">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="DraftAdministrativeData"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="SiblingEntity"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Plant"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Request"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
+                </Annotation>
+                <Annotation Term="Capabilities.SortRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonSortableProperties">
+                            <Collection>
+                                <PropertyPath>Delete_mc</PropertyPath>
+                                <PropertyPath>Update_mc</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Path="Update_mc"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/Plant" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.DraftNode">
+                    <Record/>
+                </Annotation>
+                <Annotation Term="Common.DraftActivationVia">
+                    <Collection>
+                        <String>cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/header</String>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Path="Delete_mc"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonFilterableProperties">
+                            <Collection>
+                                <PropertyPath>Delete_mc</PropertyPath>
+                                <PropertyPath>Update_mc</PropertyPath>
+                                <PropertyPath>to_Proc_oc</PropertyPath>
+                                <PropertyPath>to_Scm_oc</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="DraftEntityCreationDateTime"/>
+                                    <PropertyValue Property="AllowedExpressions" String="SingleRange"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="DraftEntityLastChangeDateTime"/>
+                                    <PropertyValue Property="AllowedExpressions" String="SingleRange"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.NavigationRestrictions">
+                    <Record>
+                        <PropertyValue Property="RestrictedProperties">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="DraftAdministrativeData"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="SiblingEntity"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Proc"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Path="to_Proc_oc"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Request"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Bool="false"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Scm"/>
+                                    <PropertyValue Property="InsertRestrictions">
+                                        <Record>
+                                            <PropertyValue Property="Insertable" Path="to_Scm_oc"/>
+                                        </Record>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
+                </Annotation>
+                <Annotation Term="Capabilities.SortRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonSortableProperties">
+                            <Collection>
+                                <PropertyPath>Delete_mc</PropertyPath>
+                                <PropertyPath>Update_mc</PropertyPath>
+                                <PropertyPath>to_Proc_oc</PropertyPath>
+                                <PropertyPath>to_Scm_oc</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Path="Update_mc"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType/CreatedByUser" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Draft Created By"/>
+                        <PropertyValue Property="CollectionPath" String="I_DraftAdministrativeUserVH"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="CreatedByUser"/>
+                                    <PropertyValue Property="ValueListProperty" String="UserID"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="UserDescription"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.I_DraftAdministrativeDataType/LastChangedByUser" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Draft Last Changed By"/>
+                        <PropertyValue Property="CollectionPath" String="I_DraftAdministrativeUserVH"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="LastChangedByUser"/>
+                                    <PropertyValue Property="ValueListProperty" String="UserID"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="UserDescription"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
             <Annotations Target="cds_zpmd_ui_product_req.Plant_VHType/PlantCustomer" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.ValueList">
                     <Record>
@@ -891,6 +1605,110 @@
                     </Record>
                 </Annotation>
             </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.headerType/OverallStatus" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Overall Status"/>
+                        <PropertyValue Property="CollectionPath" String="ZPMD_I_DEFAULTS_OS_VH"/>
+                        <PropertyValue Property="SearchSupported" Bool="true"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="OverallStatus"/>
+                                    <PropertyValue Property="ValueListProperty" String="Description"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="DefType"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="DefKey"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="SortOrder"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.headerType/CatStatus" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Cataloguer Status"/>
+                        <PropertyValue Property="CollectionPath" String="ZPMD_I_DEFAULTS_STATUS_VH"/>
+                        <PropertyValue Property="SearchSupported" Bool="false"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="CatStatus"/>
+                                    <PropertyValue Property="ValueListProperty" String="Description"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="DefType"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="DefKey"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="SortOrder"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.headerType/ProcStatus" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="Procurement Status"/>
+                        <PropertyValue Property="CollectionPath" String="ZPMD_I_DEFAULTS_STATUS_VH"/>
+                        <PropertyValue Property="SearchSupported" Bool="false"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="ProcStatus"/>
+                                    <PropertyValue Property="ValueListProperty" String="Description"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="DefType"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="DefKey"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="SortOrder"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.headerType/ScmStatus" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="Label" String="SCM Status"/>
+                        <PropertyValue Property="CollectionPath" String="ZPMD_I_DEFAULTS_STATUS_VH"/>
+                        <PropertyValue Property="SearchSupported" Bool="false"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="ScmStatus"/>
+                                    <PropertyValue Property="ValueListProperty" String="Description"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="DefType"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="DefKey"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="SortOrder"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
             <Annotations Target="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.ApplyMultiUnitBehaviorForSortingAndFiltering" Bool="true"/>
             </Annotations>
@@ -904,6 +1722,56 @@
                 <Annotation Term="Common.Composition"/>
             </Annotations>
             <Annotations Target="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/I_Customer_VH" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/I_DraftAdministrativeData" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="CreationDateTime"/>
+                                    <PropertyValue Property="AllowedExpressions" String="SingleRange"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="LastChangeDateTime"/>
+                                    <PropertyValue Property="AllowedExpressions" String="SingleRange"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/I_DraftAdministrativeUserVH" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Capabilities.DeleteRestrictions">
                     <Record>
                         <PropertyValue Property="Deletable" Bool="false"/>
@@ -954,55 +1822,6 @@
                     </Record>
                 </Annotation>
             </Annotations>
-            <Annotations Target="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/Plant" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Capabilities.DeleteRestrictions">
-                    <Record>
-                        <PropertyValue Property="Deletable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="Capabilities.InsertRestrictions">
-                    <Record>
-                        <PropertyValue Property="Insertable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="Capabilities.NavigationRestrictions">
-                    <Record>
-                        <PropertyValue Property="RestrictedProperties">
-                            <Collection>
-                                <Record>
-                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Proc"/>
-                                    <PropertyValue Property="InsertRestrictions">
-                                        <Record>
-                                            <PropertyValue Property="Insertable" Bool="false"/>
-                                        </Record>
-                                    </PropertyValue>
-                                </Record>
-                                <Record>
-                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Request"/>
-                                    <PropertyValue Property="InsertRestrictions">
-                                        <Record>
-                                            <PropertyValue Property="Insertable" Bool="false"/>
-                                        </Record>
-                                    </PropertyValue>
-                                </Record>
-                                <Record>
-                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Scm"/>
-                                    <PropertyValue Property="InsertRestrictions">
-                                        <Record>
-                                            <PropertyValue Property="Insertable" Bool="false"/>
-                                        </Record>
-                                    </PropertyValue>
-                                </Record>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="Capabilities.UpdateRestrictions">
-                    <Record>
-                        <PropertyValue Property="Updatable" Bool="false"/>
-                    </Record>
-                </Annotation>
-            </Annotations>
             <Annotations Target="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/Plant_VH" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Capabilities.DeleteRestrictions">
                     <Record>
@@ -1020,39 +1839,6 @@
                             <Collection>
                                 <Record>
                                     <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Supplier"/>
-                                    <PropertyValue Property="InsertRestrictions">
-                                        <Record>
-                                            <PropertyValue Property="Insertable" Bool="false"/>
-                                        </Record>
-                                    </PropertyValue>
-                                </Record>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="Capabilities.UpdateRestrictions">
-                    <Record>
-                        <PropertyValue Property="Updatable" Bool="false"/>
-                    </Record>
-                </Annotation>
-            </Annotations>
-            <Annotations Target="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/Proc" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Capabilities.DeleteRestrictions">
-                    <Record>
-                        <PropertyValue Property="Deletable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="Capabilities.InsertRestrictions">
-                    <Record>
-                        <PropertyValue Property="Insertable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="Capabilities.NavigationRestrictions">
-                    <Record>
-                        <PropertyValue Property="RestrictedProperties">
-                            <Collection>
-                                <Record>
-                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Plant"/>
                                     <PropertyValue Property="InsertRestrictions">
                                         <Record>
                                             <PropertyValue Property="Insertable" Bool="false"/>
@@ -1120,39 +1906,6 @@
                     </Record>
                 </Annotation>
             </Annotations>
-            <Annotations Target="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/Scm" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Capabilities.DeleteRestrictions">
-                    <Record>
-                        <PropertyValue Property="Deletable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="Capabilities.InsertRestrictions">
-                    <Record>
-                        <PropertyValue Property="Insertable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="Capabilities.NavigationRestrictions">
-                    <Record>
-                        <PropertyValue Property="RestrictedProperties">
-                            <Collection>
-                                <Record>
-                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Plant"/>
-                                    <PropertyValue Property="InsertRestrictions">
-                                        <Record>
-                                            <PropertyValue Property="Insertable" Bool="false"/>
-                                        </Record>
-                                    </PropertyValue>
-                                </Record>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="Capabilities.UpdateRestrictions">
-                    <Record>
-                        <PropertyValue Property="Updatable" Bool="false"/>
-                    </Record>
-                </Annotation>
-            </Annotations>
             <Annotations Target="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/Supplier" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Capabilities.DeleteRestrictions">
                     <Record>
@@ -1187,7 +1940,7 @@
                     </Record>
                 </Annotation>
             </Annotations>
-            <Annotations Target="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/header" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <Annotations Target="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/ZPMD_I_DEFAULTS_OS_VH" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Capabilities.DeleteRestrictions">
                     <Record>
                         <PropertyValue Property="Deletable" Bool="false"/>
@@ -1198,52 +1951,21 @@
                         <PropertyValue Property="Insertable" Bool="false"/>
                     </Record>
                 </Annotation>
-                <Annotation Term="Capabilities.NavigationRestrictions">
+                <Annotation Term="Capabilities.UpdateRestrictions">
                     <Record>
-                        <PropertyValue Property="RestrictedProperties">
-                            <Collection>
-                                <Record>
-                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_BaseUOM"/>
-                                    <PropertyValue Property="InsertRestrictions">
-                                        <Record>
-                                            <PropertyValue Property="Insertable" Bool="false"/>
-                                        </Record>
-                                    </PropertyValue>
-                                </Record>
-                                <Record>
-                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Manufacturer"/>
-                                    <PropertyValue Property="InsertRestrictions">
-                                        <Record>
-                                            <PropertyValue Property="Insertable" Bool="false"/>
-                                        </Record>
-                                    </PropertyValue>
-                                </Record>
-                                <Record>
-                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_Plant"/>
-                                    <PropertyValue Property="InsertRestrictions">
-                                        <Record>
-                                            <PropertyValue Property="Insertable" Bool="false"/>
-                                        </Record>
-                                    </PropertyValue>
-                                </Record>
-                                <Record>
-                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_ProductType"/>
-                                    <PropertyValue Property="InsertRestrictions">
-                                        <Record>
-                                            <PropertyValue Property="Insertable" Bool="false"/>
-                                        </Record>
-                                    </PropertyValue>
-                                </Record>
-                                <Record>
-                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="to_ReqPlant"/>
-                                    <PropertyValue Property="InsertRestrictions">
-                                        <Record>
-                                            <PropertyValue Property="Insertable" Bool="false"/>
-                                        </Record>
-                                    </PropertyValue>
-                                </Record>
-                            </Collection>
-                        </PropertyValue>
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.cds_zpmd_ui_product_req_Entities/ZPMD_I_DEFAULTS_STATUS_VH" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
                     </Record>
                 </Annotation>
                 <Annotation Term="Capabilities.UpdateRestrictions">
@@ -1251,6 +1973,12 @@
                         <PropertyValue Property="Updatable" Bool="false"/>
                     </Record>
                 </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.PlantType/Plant" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.Immutable"/>
+            </Annotations>
+            <Annotations Target="cds_zpmd_ui_product_req.headerType/RequestId" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.Immutable"/>
             </Annotations>
             <Annotations Target="cds_zpmd_ui_product_req.MRPTypeType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.SAPObjectNodeType">
