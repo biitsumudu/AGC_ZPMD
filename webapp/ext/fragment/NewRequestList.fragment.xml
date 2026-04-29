@@ -15,16 +15,32 @@
                 </f:DynamicPageTitle>
             </f:title>
             <f:content>
-                <List id="decisionTreeList" headerText="{decisionTree>/currentStep/QuestionText}" items="{decisionTree>/currentStep/Options}" >
-                    <items>
-                        <StandardListItem class="option-item" title="{decisionTree>Label}" icon="{decisionTree>Icon}"
-                            press=".onDecisionOptionPress" type="Navigation" />
-                    </items>
-                </List>
+                <FlexBox direction="Column" alignItems="Stretch" width="100%" fitContainer="true" >
+                    <List id="decisionTreeList" headerText="{decisionTree>/currentStep/QuestionText}" items="{decisionTree>/currentStep/Options}"
+                        width="100%" >
+                        <layoutData>
+                            <FlexItemData growFactor="1" />
+                        </layoutData>
+                        <items>
+                            <StandardListItem class="option-item" title="{decisionTree>Label}" icon="{decisionTree>Icon}"
+                                press=".onDecisionOptionPress" type="Navigation" />
+                        </items>
+                    </List>
+
+                    <VBox alignItems="Center" >
+                        <layoutData>
+                            <FlexItemData growFactor="1" />
+                        </layoutData>
+                        <Title level="H1" text="Selected Product Type"></Title>
+                        <Title level="H6" text="{decisionTree>/selectedOption/Value}" />
+                    </VBox>
+                </FlexBox>  
             </f:content>
                 <f:footer>
                     <Toolbar>
+                        <Button press=".handleWizardRestart" icon="sap-icon://refresh"></Button>
                         <ToolbarSpacer />
+                        <Button id="continueButton" text="Continue" type="Emphasized" press=".continueNewRequest" visible="{= !!${decisionTree>/selectedOption/Value} }"></Button>
                         <Button text="{i18n>newRequestWizard.cancelButton}" press=".handleWizardCancel" />
                     </Toolbar>
                 </f:footer>

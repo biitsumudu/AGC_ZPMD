@@ -1,7 +1,8 @@
 sap.ui.define([
     "sap/m/MessageToast",
-    "sap/ui/core/Fragment"
-], function (MessageToast, Fragment) {
+    "sap/ui/core/Fragment",
+    "sap/suite/ui/generic/template/displayMode"
+], function (MessageToast, Fragment, displayMode) {
     'use strict';
 
     return {
@@ -30,6 +31,7 @@ sap.ui.define([
             var jModel = this.getView().getModel("decisionTree");
             var aData = jModel.getProperty("/DecisionTree");
             jModel.setProperty("/currentStep", aData[0]);
+            jModel.setProperty("/selectedOption", null); // Reset selected option when dialog opens
         },
 
         handleWizardCancel: function () {
@@ -49,10 +51,102 @@ sap.ui.define([
 
                 // Update the model - The QuestionText in the UI updates instantly!
                 oModel.setProperty("/currentStep", oNextStepData);
+                // Set the selected option
+                oModel.setProperty("/selectedOption", oSelectedOption);
             } else {
                 // No next step? You found the Material Type!
+                oModel.setProperty("/selectedOption", oSelectedOption);
                 MessageToast.show("Material Type: " + oSelectedOption.Value);
             }
+        },
+
+        handleWizardRestart: function () {
+            var oModel = this.getView().getModel("decisionTree");
+            var aData = oModel.getProperty("/DecisionTree");
+            oModel.setProperty("/currentStep", aData[0]);
+            oModel.setProperty("/selectedOption", null); // Reset selected option when restarting
+        },
+
+        continueNewRequest1: function () {
+            const oDataModel = this.getView().getModel();
+            var oModel = this.getView().getModel("decisionTree");
+            var oSelectedOption = oModel.getProperty("/selectedOption");
+
+            this.oDialog.then(oDialog => {
+                oDialog.close();
+
+                var targetPath = "/header(-)";
+
+                oModel.createBindingContext(targetPath, null, {}, oContext => {
+                    var oNavControl = this.extensionAPI.getNavigationController();
+                    oNavControl.navigateInternal(oContext, {
+                        replaceInHistory: false,
+                        displayMode: sap.suite.ui.generic.template.displayMode.create,
+                    });
+                }, true);
+            });
+        },
+
+        continueNewRequest: function () {
+            const oDataModel = this.getView().getModel();
+            const oDecisionModel = this.getView().getModel("decisionTree");
+            const oSelectedOption = oDecisionModel.getProperty("/selectedOption");
+
+            this.oDialog.then(oDialog => {
+                oDialog.close();
+
+                var oPayload = {
+                    ProductType: oSelectedOption.Value
+                };
+
+                oDataModel.create("/header", oPayload, {
+                    success: (oCreatedEntry, oResponse) => {
+                        var sPath = oDataModel.getKey(oCreatedEntry);
+                        var oNewContext = new sap.ui.model.Context(oDataModel, sPath);
+                        var oNavControl = this.extensionAPI.getNavigationController();
+                        oNavControl.navigateInternal(oNewContext, {
+                            replaceInHistory: false,
+                            displayMode: displayMode.edit,
+                            isAbsolute: true
+                        });
+                    },
+                    error: oError => {
+                        MessageToast.show("Error creating entry: " + oError.message);
+                    }
+                });
+            });
+        },
+
+        continueNewRequest2: function () {
+            const oDataModel = this.getView().getModel();
+            const oDecisionModel = this.getView().getModel("decisionTree");
+            const oSelectedOption = oDecisionModel.getProperty("/selectedOption");
+
+            this.oDialog.then(oDialog => {
+                oDialog.close();
+
+                var oPayload = {
+                    ProductType: oSelectedOption.Value
+                };
+
+                var oNewEntry = oDataModel.createEntry("/header", {
+                    inactive: false,
+                    refreshAfterChange: true,
+                    properties: oPayload,
+                    created: (oCreatedEntry) => {
+                        var oNavControl = this.extensionAPI.getNavigationController();
+                        oNavControl.navigateInternal(oCreatedEntry, {
+                            replaceInHistory: false,
+                            displayMode: "edit"
+                        });
+                    },
+                    success: (oCreatedEntry, oResponse) => {
+                    },
+                    error: oError => {
+                        MessageToast.show("Error creating entry: " + oError.message);
+                    }
+                });
+            });
         }
 
     };
