@@ -6,7 +6,7 @@
             "Options": [
                 {
                     "Label": "Service",
-                    "Value": "ZSERV",
+                    "Value": "SERV",
                     "NextStep": null,
                     "Icon": "sap-icon://service"
                 },
